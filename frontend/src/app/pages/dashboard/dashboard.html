@@ -1,0 +1,209 @@
+<div class="dashboard">
+  <!-- Header com Material Card -->
+  <mat-card class="dashboard-header" appearance="outlined">
+    <mat-card-content>
+      <div class="header-content">
+        <div class="header-title">
+          <h1>Dashboard de Qualidade</h1>
+          <p class="subtitle">Visão geral do sistema de gerenciamento de qualidade</p>
+        </div>
+        <div class="header-actions">
+          <button mat-raised-button color="primary">
+            <mat-icon>download</mat-icon>
+            Exportar Relatório
+          </button>
+          <button mat-raised-button color="accent">
+            <mat-icon>add</mat-icon>
+            Novo Teste
+          </button>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Métricas Principais -->
+  <section class="metrics-section">
+    <div class="metrics-grid">
+      @for (metric of metrics(); track metric.id) {
+      <mat-card class="metric-card" appearance="outlined">
+        <mat-card-content>
+          <div class="metric-header">
+            <mat-icon [color]="metric.color" class="metric-icon">{{ metric.icon }}</mat-icon>
+            <h3 class="metric-title">{{ metric.title }}</h3>
+          </div>
+          <div class="metric-value">
+            {{ metric.value }}
+            @if (metric.title.includes('Tempo')) {
+            <span class="metric-unit">min</span>
+            } @else if (metric.title.includes('Bugs')) {
+            <span class="metric-unit"></span>
+            } @else {
+            <span class="metric-unit">%</span>
+            }
+          </div>
+          <div class="metric-change" [class.positive]="metric.change > 0" [class.negative]="metric.change < 0">
+            <mat-icon class="change-icon">{{ metric.change > 0 ? 'trending_up' : 'trending_down' }}</mat-icon>
+            <span class="change-value">{{ Math.abs(metric.change) }}%</span>
+            <span class="change-label">vs. semana anterior</span>
+          </div>
+        </mat-card-content>
+      </mat-card>
+      }
+    </div>
+  </section>
+
+  <!-- Grid Principal -->
+  <div class="dashboard-grid">
+    <!-- Testes Recentes -->
+    <section class="recent-tests-section">
+      <div class="section-header">
+        <h2>Testes Recentes</h2>
+        <button mat-button color="primary">
+          Ver todos
+          <mat-icon>arrow_forward</mat-icon>
+        </button>
+      </div>
+      <div class="tests-list">
+        @for (test of recentTests(); track test.id) {
+        <mat-card class="test-item" appearance="outlined">
+          <mat-card-content>
+            <div class="test-header">
+              <div class="test-info">
+                <h3 class="test-name">{{ test.name }}</h3>
+                <div class="test-meta">
+                  <span class="test-date">
+                    <mat-icon>schedule</mat-icon>
+                    {{ test.date }}
+                  </span>
+                  <span class="test-duration">
+                    <mat-icon>timer</mat-icon>
+                    {{ test.duration }}
+                  </span>
+                </div>
+              </div>
+              <mat-chip [color]="getStatusColor(test.status)" highlighted>
+                <mat-icon>{{ getStatusIcon(test.status) }}</mat-icon>
+                {{ getStatusText(test.status) }}
+              </mat-chip>
+            </div>
+            <div class="test-footer">
+              <div class="coverage-info">
+                <span class="coverage-label">Cobertura: {{ test.coverage }}%</span>
+                <mat-progress-bar mode="determinate" [value]="test.coverage"
+                  [color]="test.coverage >= 80 ? 'accent' : 'warn'">
+                </mat-progress-bar>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+        }
+      </div>
+    </section>
+
+    <!-- Projetos -->
+    <section class="projects-section">
+      <div class="section-header">
+        <h2>Projetos</h2>
+        <button mat-button color="primary">
+          Ver todos
+          <mat-icon>arrow_forward</mat-icon>
+        </button>
+      </div>
+      <div class="projects-list">
+        @for (project of projects(); track project.id) {
+        <mat-card class="project-item" appearance="outlined">
+          <mat-card-content>
+            <div class="project-header">
+              <h3 class="project-name">{{ project.name }}</h3>
+              <mat-chip [color]="getStatusColor(project.status)" highlighted>
+                <mat-icon>{{ getStatusIcon(project.status) }}</mat-icon>
+                {{ getStatusText(project.status) }}
+              </mat-chip>
+            </div>
+            <div class="project-stats">
+              <div class="stat">
+                <mat-icon color="accent">check_circle</mat-icon>
+                <div class="stat-content">
+                  <span class="stat-value">{{ project.tests }}</span>
+                  <span class="stat-label">Testes</span>
+                </div>
+              </div>
+              <div class="stat">
+                <mat-icon color="warn">bug_report</mat-icon>
+                <div class="stat-content">
+                  <span class="stat-value">{{ project.bugs }}</span>
+                  <span class="stat-label">Bugs</span>
+                </div>
+              </div>
+            </div>
+            <div class="project-progress">
+              <div class="progress-header">
+                <span class="progress-label">Progresso</span>
+                <span class="progress-value">{{ project.progress }}%</span>
+              </div>
+              <mat-progress-bar mode="determinate" [value]="project.progress" color="primary">
+              </mat-progress-bar>
+            </div>
+          </mat-card-content>
+        </mat-card>
+        }
+      </div>
+    </section>
+  </div>
+
+  <!-- Gráfico de Tendências -->
+  <section class="chart-section">
+    <mat-card appearance="outlined">
+      <mat-card-header>
+        <mat-card-title>Tendência de Qualidade</mat-card-title>
+        <div class="chart-filters">
+          <mat-chip-set aria-label="Filtros de período">
+            <mat-chip highlighted color="primary">7 dias</mat-chip>
+            <mat-chip>30 dias</mat-chip>
+            <mat-chip>90 dias</mat-chip>
+          </mat-chip-set>
+        </div>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="chart-container">
+          <div class="chart-legend">
+            <div class="legend-item">
+              <span class="legend-color accent"></span>
+              <span class="legend-label">Testes Passando</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-color primary"></span>
+              <span class="legend-label">Cobertura</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-color warn"></span>
+              <span class="legend-label">Bugs</span>
+            </div>
+          </div>
+          <div class="chart-placeholder">
+            <svg viewBox="0 0 800 300" class="chart-svg">
+              <!-- Grid Lines -->
+              <line x1="50" y1="50" x2="750" y2="50" stroke="currentColor" stroke-width="1" opacity="0.1" />
+              <line x1="50" y1="112.5" x2="750" y2="112.5" stroke="currentColor" stroke-width="1" opacity="0.1" />
+              <line x1="50" y1="175" x2="750" y2="175" stroke="currentColor" stroke-width="1" opacity="0.1" />
+              <line x1="50" y1="237.5" x2="750" y2="237.5" stroke="currentColor" stroke-width="1" opacity="0.1" />
+              <line x1="50" y1="300" x2="750" y2="300" stroke="currentColor" stroke-width="1" opacity="0.1" />
+
+              <!-- Testes Passando (Verde) -->
+              <polyline points="50,150 150,120 250,100 350,110 450,90 550,80 650,75 750,70" fill="none" stroke="#22c55e"
+                stroke-width="3" class="chart-line" />
+
+              <!-- Cobertura (Azul) -->
+              <polyline points="50,180 150,170 250,160 350,155 450,145 550,140 650,135 750,130" fill="none"
+                stroke="#0ea5e9" stroke-width="3" class="chart-line" />
+
+              <!-- Bugs (Vermelho) -->
+              <polyline points="50,100 150,110 250,105 350,115 450,100 550,95 650,90 750,85" fill="none"
+                stroke="#ef4444" stroke-width="3" class="chart-line" />
+            </svg>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </section>
+</div>

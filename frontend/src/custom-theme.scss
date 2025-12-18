@@ -1,0 +1,33 @@
+// Custom theme for Angular Material
+@use '@angular/material' as mat;
+
+// Define custom color palettes
+$custom-primary: mat.define-palette(mat.$blue-palette, 600);
+$custom-accent: mat.define-palette(mat.$purple-palette, 500);
+$custom-warn: mat.define-palette(mat.$red-palette);
+
+// Create dark theme
+$custom-theme: mat.define-theme((color: (theme-type: dark,
+        primary: $custom-primary,
+        tertiary: $custom-accent,
+      ),
+      typography: (brand-family: 'Inter, sans-serif',
+        plain-family: 'Inter, sans-serif',
+      ),
+      density: 0,
+    ));
+
+// Include theme styles for core and each component
+html {
+  @include mat.all-component-themes($custom-theme);
+  @include mat.typography-hierarchy($custom-theme);
+}
+
+body {
+  color-scheme: dark;
+  background-color: #0f172a;
+  color: #f1f5f9;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  margin: 0;
+  padding: 0;
+}

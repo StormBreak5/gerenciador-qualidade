@@ -1,0 +1,482 @@
+// Dashboard SCSS com Angular Material
+@use '@angular/material' as mat;
+
+.dashboard {
+    min-height: 100vh;
+    padding: 2rem 0;
+    animation: fadeIn 0.3s ease-out;
+}
+
+// ===== HEADER =====
+.dashboard-header {
+    margin-bottom: 2rem;
+    background: linear-gradient(135deg, #0ea5e9, #a855f7) !important;
+    border: none !important;
+
+    mat-card-content {
+        padding: 2.5rem;
+    }
+
+    .header-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 2rem;
+        flex-wrap: wrap;
+    }
+
+    .header-title {
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin: 0 0 0.5rem 0;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .subtitle {
+            color: rgba(255, 255, 255, 0.95);
+            font-size: 1.125rem;
+            margin: 0;
+        }
+    }
+
+    .header-actions {
+        display: flex;
+        gap: 1rem;
+
+        button {
+            mat-icon {
+                margin-right: 0.5rem;
+            }
+        }
+    }
+}
+
+// ===== MÉTRICAS =====
+.metrics-section {
+    margin-bottom: 2rem;
+}
+
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.metric-card {
+    transition: all 0.2s ease;
+
+    &:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    mat-card-content {
+        padding: 1.5rem;
+    }
+
+    .metric-header {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1rem;
+
+        .metric-icon {
+            font-size: 2.5rem;
+            width: 2.5rem;
+            height: 2.5rem;
+        }
+
+        .metric-title {
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin: 0;
+            opacity: 0.8;
+        }
+    }
+
+    .metric-value {
+        font-size: 2.5rem;
+        font-weight: 800;
+        line-height: 1;
+        margin-bottom: 0.75rem;
+
+        .metric-unit {
+            font-size: 1.25rem;
+            font-weight: 600;
+            opacity: 0.6;
+            margin-left: 0.25rem;
+        }
+    }
+
+    .metric-change {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.875rem;
+        font-weight: 600;
+
+        &.positive {
+            color: #22c55e;
+        }
+
+        &.negative {
+            color: #ef4444;
+        }
+
+        .change-icon {
+            font-size: 1.25rem;
+            width: 1.25rem;
+            height: 1.25rem;
+        }
+
+        .change-label {
+            opacity: 0.6;
+            font-weight: 400;
+        }
+    }
+}
+
+// ===== GRID PRINCIPAL =====
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+// ===== SEÇÕES =====
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+
+    h2 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin: 0;
+    }
+
+    button {
+        mat-icon {
+            margin-left: 0.25rem;
+        }
+    }
+}
+
+// ===== TESTES RECENTES =====
+.tests-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.test-item {
+    transition: all 0.2s ease;
+
+    &:hover {
+        transform: translateX(4px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    mat-card-content {
+        padding: 1.5rem;
+    }
+
+    .test-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .test-info {
+        flex: 1;
+
+        .test-name {
+            font-size: 1rem;
+            font-weight: 600;
+            margin: 0 0 0.5rem 0;
+        }
+
+        .test-meta {
+            display: flex;
+            gap: 1.5rem;
+            font-size: 0.875rem;
+            opacity: 0.7;
+
+            span {
+                display: flex;
+                align-items: center;
+                gap: 0.25rem;
+
+                mat-icon {
+                    font-size: 1rem;
+                    width: 1rem;
+                    height: 1rem;
+                }
+            }
+        }
+    }
+
+    .test-footer {
+        margin-top: 1rem;
+
+        .coverage-info {
+            .coverage-label {
+                font-size: 0.875rem;
+                font-weight: 600;
+                margin-bottom: 0.5rem;
+                display: block;
+            }
+
+            mat-progress-bar {
+                height: 8px;
+                border-radius: 4px;
+            }
+        }
+    }
+}
+
+// ===== PROJETOS =====
+.projects-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.project-item {
+    transition: all 0.2s ease;
+
+    &:hover {
+        transform: translateX(4px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    mat-card-content {
+        padding: 1.5rem;
+    }
+
+    .project-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 1rem;
+        margin-bottom: 1rem;
+
+        .project-name {
+            font-size: 1rem;
+            font-weight: 600;
+            margin: 0;
+            flex: 1;
+        }
+    }
+
+    .project-stats {
+        display: flex;
+        gap: 2rem;
+        margin-bottom: 1rem;
+        padding: 1rem;
+        background: rgba(0, 0, 0, 0.1);
+        border-radius: 0.5rem;
+
+        .stat {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+
+            mat-icon {
+                font-size: 1.5rem;
+                width: 1.5rem;
+                height: 1.5rem;
+            }
+
+            .stat-content {
+                display: flex;
+                flex-direction: column;
+
+                .stat-value {
+                    font-size: 1.25rem;
+                    font-weight: 700;
+                }
+
+                .stat-label {
+                    font-size: 0.875rem;
+                    opacity: 0.7;
+                }
+            }
+        }
+    }
+
+    .project-progress {
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+
+            .progress-label {
+                font-size: 0.875rem;
+                font-weight: 600;
+            }
+
+            .progress-value {
+                font-size: 0.875rem;
+                font-weight: 700;
+                color: #0ea5e9;
+            }
+        }
+
+        mat-progress-bar {
+            height: 8px;
+            border-radius: 4px;
+        }
+    }
+}
+
+// ===== GRÁFICO =====
+.chart-section {
+    mat-card {
+        mat-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 1.5rem 0;
+
+            mat-card-title {
+                font-size: 1.5rem;
+                font-weight: 700;
+                margin: 0;
+            }
+
+            .chart-filters {
+                mat-chip-set {
+                    mat-chip {
+                        cursor: pointer;
+                    }
+                }
+            }
+        }
+
+        mat-card-content {
+            padding: 1.5rem;
+        }
+    }
+
+    .chart-container {
+        min-height: 400px;
+
+        .chart-legend {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+
+            .legend-item {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+
+                .legend-color {
+                    width: 16px;
+                    height: 16px;
+                    border-radius: 4px;
+
+                    &.accent {
+                        background: #22c55e;
+                    }
+
+                    &.primary {
+                        background: #0ea5e9;
+                    }
+
+                    &.warn {
+                        background: #ef4444;
+                    }
+                }
+
+                .legend-label {
+                    font-size: 0.875rem;
+                    font-weight: 600;
+                }
+            }
+        }
+
+        .chart-placeholder {
+            width: 100%;
+            height: 300px;
+
+            .chart-svg {
+                width: 100%;
+                height: 100%;
+
+                .chart-line {
+                    stroke-dasharray: 1000;
+                    stroke-dashoffset: 1000;
+                    animation: drawLine 2s ease-out forwards;
+                }
+            }
+        }
+    }
+}
+
+// ===== ANIMAÇÕES =====
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes drawLine {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+// ===== RESPONSIVIDADE =====
+@media (max-width: 1024px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .dashboard {
+        padding: 1rem 0;
+    }
+
+    .dashboard-header {
+        mat-card-content {
+            padding: 1.5rem;
+        }
+
+        .header-title h1 {
+            font-size: 1.75rem;
+        }
+
+        .header-content {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+    }
+
+    .metrics-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .project-stats {
+        flex-direction: column;
+        gap: 1rem !important;
+    }
+}
