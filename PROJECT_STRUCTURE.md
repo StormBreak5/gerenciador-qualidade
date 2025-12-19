@@ -98,19 +98,112 @@ Página principal do sistema com:
 ## 🔧 Backend - Spring Boot
 
 ### Tecnologias Utilizadas
-- **Spring Boot** - Framework principal
+- **Spring Boot 3.3.0** - Framework principal
+- **Spring Security** - Autenticação e autorização
+- **Spring Data JPA** - Persistência de dados
+- **H2 Database** - Banco de dados em memória (desenvolvimento)
+- **Auth0 Java JWT 4.4.0** - Geração e validação de tokens JWT
+- **Lombok** - Redução de código boilerplate
 - **Maven** - Gerenciador de dependências
 - **Java** - Linguagem de programação
 
-### Estrutura (A ser desenvolvida)
+### Estrutura Implementada
 ```
-src/main/java/
-├── controllers/    # Controladores REST
-├── services/       # Lógica de negócio
-├── repositories/   # Acesso a dados
-├── models/         # Entidades/DTOs
-└── config/         # Configurações
+src/main/java/com/sotrigo/qualidade/
+├── GerenciadorApplication.java    # Classe principal Spring Boot
+│
+├── config/                         # Configurações
+│   └── SecurityConfiguration.java # Configuração de segurança e CORS
+│
+├── controller/                     # Controladores REST
+│   └── UserController.java        # Endpoints de usuário e autenticação
+│
+├── dtos/                          # Data Transfer Objects
+│   ├── CreateUserDto.java         # DTO para criação de usuário
+│   ├── LoginUserDto.java          # DTO para login
+│   ├── RecoveryJwtTokenDto.java   # DTO para retorno de token JWT
+│   └── RecoveryUserDto.java       # DTO para retorno de dados do usuário
+│
+├── models/                        # Entidades e modelos
+│   ├── User.java                  # Entidade de usuário (JPA)
+│   ├── Role.java                  # Entidade de papel/permissão (JPA)
+│   ├── enums/
+│   │   └── RoleName.java         # Enum com tipos de papéis
+│   └── impl/
+│       └── UserDetailsImpl.java  # Implementação UserDetails do Spring Security
+│
+├── repository/                    # Repositórios JPA
+│   └── UserRepository.java       # Repositório de usuários
+│
+├── security/                      # Componentes de segurança
+│   └── UserAuthenticationFilter.java  # Filtro de autenticação JWT
+│
+└── service/                       # Serviços de negócio
+    ├── JwtTokenService.java      # Serviço de geração/validação JWT
+    ├── UserService.java          # Serviço de gerenciamento de usuários
+    └── impl/
+        └── UserDetailsServiceImpl.java  # Implementação UserDetailsService
+
+src/main/resources/
+├── application.properties         # Configurações da aplicação
+├── static/                       # Recursos estáticos
+└── templates/                    # Templates (se necessário)
 ```
+
+### Funcionalidades Implementadas
+
+#### 🔐 Sistema de Autenticação JWT
+- **Geração de Tokens**: Tokens JWT com expiração configurável
+- **Validação de Tokens**: Verificação de assinatura e expiração
+- **Extração de Claims**: Recuperação de informações do usuário do token
+- **Secret Key**: Chave secreta para assinatura dos tokens
+
+#### 👤 Gerenciamento de Usuários
+- **Criação de Usuários**: Endpoint para registro de novos usuários
+- **Autenticação**: Login com email e senha
+- **Autorização**: Sistema baseado em roles (ADMINISTRATOR, USER)
+- **Criptografia**: Senhas criptografadas com BCrypt
+
+#### 🛡️ Segurança
+- **Spring Security**: Configuração completa de segurança
+- **CORS**: Configurado para permitir requisições do frontend
+- **Filtros**: Filtro customizado para validação de JWT em cada requisição
+- **Endpoints Públicos**: `/users/login` e `/users` (registro) são públicos
+- **Endpoints Protegidos**: Demais endpoints requerem autenticação
+
+### Endpoints da API
+
+#### Autenticação e Usuários
+```
+POST /users/login          # Login (público)
+POST /users                # Criar usuário (público)
+GET  /users/test          # Endpoint de teste (autenticado)
+```
+
+### Modelos de Dados
+
+#### User (Usuário)
+- `id`: Long (chave primária)
+- `email`: String (único)
+- `password`: String (criptografada)
+- `roles`: List<Role> (papéis do usuário)
+
+#### Role (Papel/Permissão)
+- `id`: Long (chave primária)
+- `name`: RoleName (ADMINISTRATOR, USER)
+
+### Configurações de Segurança
+
+#### CORS
+- Permite requisições de: `http://localhost:4200` (frontend Angular)
+- Métodos permitidos: GET, POST, PUT, DELETE, OPTIONS, PATCH
+- Headers permitidos: Authorization, Content-Type
+- Credentials: Habilitado
+
+#### JWT
+- Algoritmo: HMAC256
+- Secret Key: Configurável
+- Expiração: Configurável (padrão: 2 horas)
 
 ## 🚀 Como Executar
 
@@ -138,13 +231,19 @@ mvnw.cmd spring-boot:run  # Windows
 - `typescript`: ~5.x
 
 ### Backend (pom.xml)
-- Spring Boot Starter Web
-- Spring Boot Starter Data JPA (futuro)
-- Spring Boot DevTools
+- **Spring Boot 3.3.0**
+  - `spring-boot-starter-web` - REST API
+  - `spring-boot-starter-security` - Segurança
+  - `spring-boot-starter-data-jpa` - Persistência
+  - `spring-boot-starter-test` - Testes
+  - `spring-boot-devtools` - Desenvolvimento
+- **Auth0 Java JWT 4.4.0** - Tokens JWT
+- **H2 Database** - Banco em memória
+- **Lombok** - Redução de boilerplate
 
 ## 🎯 Funcionalidades Implementadas
 
-### ✅ Concluído
+### ✅ Frontend - Concluído
 - [x] Estrutura base do projeto
 - [x] Configuração Angular com Material
 - [x] Dashboard com dados mockados
@@ -154,11 +253,24 @@ mvnw.cmd spring-boot:run  # Windows
 - [x] Roteamento básico
 - [x] Migração para SCSS
 
+### ✅ Backend - Concluído
+- [x] Estrutura base Spring Boot
+- [x] Sistema de autenticação JWT
+- [x] Spring Security configurado
+- [x] Gerenciamento de usuários
+- [x] Sistema de roles (ADMINISTRATOR, USER)
+- [x] Repositórios JPA
+- [x] DTOs para transferência de dados
+- [x] Configuração CORS
+- [x] Banco de dados H2 (desenvolvimento)
+- [x] Endpoints de autenticação
+
 ### 🔄 Em Desenvolvimento
 - [ ] Integração Backend-Frontend
-- [ ] API REST
-- [ ] Autenticação e Autorização
-- [ ] Banco de dados
+- [ ] Tela de login no frontend
+- [ ] Interceptor HTTP para JWT
+- [ ] Guards de rota
+- [ ] Migração para banco de produção
 - [ ] Testes automatizados
 - [ ] CI/CD
 
@@ -211,7 +323,7 @@ Estes dados serão substituídos por chamadas à API quando o backend estiver im
 - Desenvolvedor Full Stack
 
 ## 📅 Última Atualização
-17 de Dezembro de 2025
+19 de Dezembro de 2025
 
 ---
 
